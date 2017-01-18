@@ -6,11 +6,11 @@ using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigur
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class UnitOfWork<TContext, TEntity, TIdType> : IUnitOfWork<TContext, TEntity, TIdType>, IDisposable where TContext: DbContext where TEntity : class
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
     {
         private readonly TContext _context;
 
-        public UnitOfWork(TContext context, Func<TEntity, TIdType> idGetter)
+        public UnitOfWork(TContext context)
         {
             if (context == null)
             {
@@ -18,11 +18,12 @@ namespace RepositoryFoundation.Repository.Models
             }
             _context = context;
         }
-        public IGenericRepository<TEntity, TContext, TIdType> GetRepository()
+        public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class
         {
             var args = new ExplicitArguments();
             args.Set(_context);
-            return GetInstance<IGenericRepository<TEntity, TContext, TIdType>>(args);
+            args.Set(idGetter);
+            return GetInstance<IGenericRepository<TContext, TEntity, TIdType>>(args);
         }
         public void Commit()
         {
@@ -31,7 +32,8 @@ namespace RepositoryFoundation.Repository.Models
 
         public void Dispose()
         {
-            _context.Dispose();
+            if (_context != null)
+                _context.Dispose();
         }
     }
 }

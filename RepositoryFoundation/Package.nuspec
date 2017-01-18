@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>RepositoryFoundation</id>
-    <version>1.0.1</version>
+    <version>1.0.4</version>
     <title>RepositoryFoundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -10,19 +10,25 @@
       This creates a generic repository with unit of work pattern to implement common Entity Framework context.
     </description>
     <releaseNotes>
+      1.0.4
+      *Solved issue of unit of work pattern variable cannot be used in 'using' keyword
+      1.0.3
+      *Added few more helper repository methods for Any Linq Function
+      1.0.2
+      *Solved unit of work not remaining unique issue
       1.0.1
-        *Made UnitOfWork Pattern Disposable
-        *Generic Repository now uses Func delegate to get Id of entity
+      *Made UnitOfWork Pattern Disposable
+      *Generic Repository now uses Func delegate to get Id of entity
     </releaseNotes>
     <summary>
       Generic Repository using Unit of Work pattern
     </summary>
     <language>en-US</language>
-    <projectUrl>https://nuget.org/packages/RepositoryFoundation</projectUrl>
+    <projectUrl>https://github.com/abhinavjp/RepositoryFoundation</projectUrl>
     <iconUrl>https://nuget.org/Content/Images/packageDefaultIcon-50x50.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <copyright>Copyright  2017</copyright>
+    <licenseUrl>https://github.com/abhinavjp/RepositoryFoundation</licenseUrl>
+    <copyright>2017</copyright>
     <dependencies>
       <dependency id="EntityFramework" version="6.1.3" />
       <dependency id="StructureMap" version="4.4.2" />

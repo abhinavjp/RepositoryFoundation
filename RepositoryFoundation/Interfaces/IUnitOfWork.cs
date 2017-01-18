@@ -1,10 +1,11 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 
 namespace RepositoryFoundation.Repository.Interface
 {
-    public interface IUnitOfWork<TContext, TEntity, TIdType> where TContext : DbContext where TEntity : class
+    public interface IUnitOfWork<TContext> : IDisposable where TContext : DbContext
     {
-        IGenericRepository<TEntity, TContext, TIdType> GetRepository();
+        IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class;
         void Commit();
     }
 }

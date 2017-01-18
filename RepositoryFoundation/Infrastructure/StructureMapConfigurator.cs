@@ -15,7 +15,7 @@ namespace RepositoryFoundation.Repository.Infrastructure
             container.Configure(x =>
             {
                 // Repository
-                x.For(typeof(IUnitOfWork<,,>)).Use(typeof(UnitOfWork<,,>));
+                x.For(typeof(IUnitOfWork<>)).Use(typeof(UnitOfWork<>));
                 x.For(typeof(IGenericRepository<,,>)).Use(typeof(GenericRepository<,,>));
             });
             isInitialized = true;

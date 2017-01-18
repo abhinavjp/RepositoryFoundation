@@ -6,7 +6,7 @@ using RepositoryFoundation.Repository.Interface;
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class GenericRepository<TEntity, TContext, TIdType> : IGenericRepository<TEntity, TContext, TIdType> where TEntity : class where TContext : DbContext
+    public class GenericRepository<TContext, TEntity, TIdType> : IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext
     {
         internal TContext context;
         internal DbSet<TEntity> dbSet;
@@ -44,6 +44,21 @@ namespace RepositoryFoundation.Repository.Models
         public TEntity FindFirst(Expression<Func<TEntity, bool>> conditionParam)
         {
             return dbSet.FirstOrDefault(conditionParam);
+        }
+
+        public TEntity FindFirst()
+        {
+            return dbSet.FirstOrDefault();
+        }
+
+        public bool HasData(Expression<Func<TEntity, bool>> conditionParam)
+        {
+            return dbSet.Any(conditionParam);
+        }
+
+        public bool HasData()
+        {
+            return dbSet.Any();
         }
 
         public TEntity Find(int id)
