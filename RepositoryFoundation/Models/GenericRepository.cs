@@ -6,23 +6,25 @@ using RepositoryFoundation.Repository.Interface;
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class GenericRepository<TEntity, TContext> : IGenericRepository<TEntity, TContext> where TEntity : class where TContext : DbContext
+    public class GenericRepository<TEntity, TContext, TIdType> : IGenericRepository<TEntity, TContext, TIdType> where TEntity : class where TContext : DbContext
     {
         internal TContext context;
         internal DbSet<TEntity> dbSet;
+        internal Func<TEntity, TIdType> idGetter;
 
-        public GenericRepository(TContext context)
+        public GenericRepository(TContext context, Func<TEntity, TIdType> idGetter)
         {
             this.context = context;
             this.dbSet = context.Set<TEntity>();
+            this.idGetter = idGetter;
         }
 
-        public IQueryable<TEntity> All
+        public IQueryable<TEntity> GetAll()
         {
-            get { return dbSet; }
+            return dbSet;
         }
 
-        public IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        public IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = dbSet;
             foreach (var includeProperty in includeProperties)
@@ -39,19 +41,30 @@ namespace RepositoryFoundation.Repository.Models
             return query;
         }
 
+        public TEntity FindFirst(Expression<Func<TEntity, bool>> conditionParam)
+        {
+            return dbSet.FirstOrDefault(conditionParam);
+        }
+
         public TEntity Find(int id)
         {
             return dbSet.Find(id);
         }
 
-        public virtual void Insert(TEntity TEntry)
+        public virtual void InsertOrUpdate(TEntity TEntry)
         {
-            dbSet.Add(TEntry);
-        }
-
-        public virtual void Update(TEntity TEntry)
-        {
-            context.Entry(TEntry).State = EntityState.Modified;
+            if(idGetter(TEntry).Equals(default(TIdType)))
+            {
+                dbSet.Add(TEntry);
+            }
+            else
+            {
+                if(context.Entry(TEntry).State == EntityState.Detached)
+                {
+                    dbSet.Attach(TEntry);
+                }
+                context.Entry(TEntry).State = EntityState.Modified;
+            }
         }
 
         public void Delete(int id)

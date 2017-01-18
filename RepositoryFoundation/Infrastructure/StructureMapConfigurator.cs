@@ -16,7 +16,7 @@ namespace RepositoryFoundation.Repository.Infrastructure
             {
                 // Repository
                 x.For(typeof(IUnitOfWork<,,>)).Use(typeof(UnitOfWork<,,>));
-                x.For(typeof(IGenericRepository<,>)).Use(typeof(GenericRepository<,>));
+                x.For(typeof(IGenericRepository<,,>)).Use(typeof(GenericRepository<,,>));
             });
             isInitialized = true;
         }
