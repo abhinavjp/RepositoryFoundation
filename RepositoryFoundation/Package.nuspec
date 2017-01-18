@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>RepositoryFoundation</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <title>RepositoryFoundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -10,6 +10,9 @@
       This creates a generic repository with unit of work pattern to implement common Entity Framework context.
     </description>
     <releaseNotes>
+      1.0.1
+        *Made UnitOfWork Pattern Disposable
+        *Generic Repository now uses Func delegate to get Id of entity
     </releaseNotes>
     <summary>
       Generic Repository using Unit of Work pattern
@@ -28,6 +31,6 @@
     <tags></tags>
   </metadata>
   <files>
-    <file src="bin\Debug\RepositoryFoundation.dll" target="lib" />
+    <file src="bin\Debug\RepositoryFoundation.dll" target="lib\net45" />
   </files>
 </package>
