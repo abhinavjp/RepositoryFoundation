@@ -21,6 +21,13 @@ namespace RepositoryFoundation.Repository.Infrastructure
             isInitialized = true;
         }
 
+        public static void Configure(ConfigurationExpression config)
+        {
+            config.For(typeof(IUnitOfWork<>)).Use(typeof(UnitOfWork<>));
+            config.For(typeof(IGenericRepository<,,>)).Use(typeof(GenericRepository<,,>));
+            isInitialized = true;
+        }
+
         public static T GetInstance<T>()
         {
             if (!isInitialized)
