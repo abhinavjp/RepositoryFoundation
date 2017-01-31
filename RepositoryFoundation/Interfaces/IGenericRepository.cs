@@ -1,11 +1,12 @@
-﻿using System;
+﻿using RepositoryFoundation.Interfaces;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace RepositoryFoundation.Repository.Interface
 {
-    public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext
+    public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : IDbContext
     {
         IQueryable<TEntity> GetAll();
         IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);

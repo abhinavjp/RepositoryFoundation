@@ -1,12 +1,14 @@
-﻿using RepositoryFoundation.Repository.Interface;
+﻿using RepositoryFoundation.Interfaces;
+using RepositoryFoundation.Repository.Interface;
 using StructureMap.Pipeline;
 using System;
 using System.Data.Entity;
+using System.Threading.Tasks;
 using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigurator;
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : IDbContext
     {
         private readonly TContext _context;
 
@@ -25,15 +27,41 @@ namespace RepositoryFoundation.Repository.Models
             args.Set(idGetter);
             return GetInstance<IGenericRepository<TContext, TEntity, TIdType>>(args);
         }
-        public void Commit()
+
+        public int Commit()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges();
+        }
+        public async Task<int> CommitAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+        public int CommitMultiple(params IUnitOfWork[] unitOfWorks)
+        {
+            int count = 0;
+            foreach (var unitOfWork in unitOfWorks)
+            {
+                count += unitOfWork.Commit();
+            }
+            return count;
+        }
+
+        public async Task<int> CommitMultipleAsync(params IUnitOfWork[] unitOfWorks)
+        {
+            int count = 0;
+            foreach (var unitOfWork in unitOfWorks)
+            {
+                count += await unitOfWork.CommitAsync();
+            }
+            return count;
         }
 
         public void Dispose()
         {
             if (_context != null)
                 _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

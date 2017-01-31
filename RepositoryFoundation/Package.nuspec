@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>RepositoryFoundation</id>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
     <title>RepositoryFoundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -10,6 +10,10 @@
       This creates a generic repository with unit of work pattern to implement common Entity Framework context.
     </description>
     <releaseNotes>
+      1.0.7
+      *Started implementation of functionality related to multiple DBContexts
+      1.0.6
+      *Fixed issue of structuremap not being configured in application's structuremap
       1.0.5
       *Structuremap can now be configured in application's structuremap itself and hence not required can be called using application's structuremap.
       Feature is optional. Can still be used in the old way
