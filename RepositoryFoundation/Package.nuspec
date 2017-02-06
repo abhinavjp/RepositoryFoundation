@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>RepositoryFoundation</id>
-    <version>1.0.7</version>
-    <title>RepositoryFoundation</title>
+    <id>Foundation</id>
+    <version>1.1.0</version>
+    <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
     <description>
-      This creates a generic repository with unit of work pattern to implement common Entity Framework context.
+      Repository Foundation
+      *This creates a generic repository with unit of work pattern to implement common Entity Framework context.
+      Helper Foundation
+      *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.1.0
+      *Added Helper Foundation which include error handler and dynamic expression builder classes
       1.0.7
       *Started implementation of functionality related to multiple DBContexts
       1.0.6
@@ -28,7 +33,7 @@
       *Generic Repository now uses Func delegate to get Id of entity
     </releaseNotes>
     <summary>
-      Generic Repository using Unit of Work pattern
+      A project foundation package which helps in fast creation of basic CRUD application in C#
     </summary>
     <language>en-US</language>
     <projectUrl>https://github.com/abhinavjp/RepositoryFoundation</projectUrl>

@@ -1,6 +1,6 @@
 ﻿using StructureMap;
 using StructureMap.Pipeline;
-using RepositoryFoundation.Repository.Interface;
+using RepositoryFoundation.Interfaces;
 using RepositoryFoundation.Repository.Models;
 
 namespace RepositoryFoundation.Repository.Infrastructure

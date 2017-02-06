@@ -1,5 +1,4 @@
 ﻿using RepositoryFoundation.Interfaces;
-using RepositoryFoundation.Repository.Interface;
 using StructureMap.Pipeline;
 using System;
 using System.Collections.Generic;
@@ -13,22 +12,22 @@ namespace RepositoryFoundation.Models
 {
     public class UnitOfWorkFactory
     {
-        private readonly Dictionary<IDbContext, IUnitOfWork<IDbContext>> _unitOfWorkDictionary;
+        private readonly Dictionary<DbContext, IUnitOfWork<DbContext>> _unitOfWorkDictionary;
         public UnitOfWorkFactory()
         {
-            _unitOfWorkDictionary = new Dictionary<IDbContext, IUnitOfWork<IDbContext>>();
+            _unitOfWorkDictionary = new Dictionary<DbContext, IUnitOfWork<DbContext>>();
         }
-        public IUnitOfWork<TContext> GetUnitOfWork<TContext>(TContext context) where TContext : IDbContext
+        public IUnitOfWork<TContext> GetUnitOfWork<TContext>(TContext context) where TContext : DbContext
         {
             if (!_unitOfWorkDictionary.ContainsKey(context))
             {
                 var args = new ExplicitArguments();
                 args.Set(context);
-                _unitOfWorkDictionary[context] = GetInstance<IUnitOfWork<TContext>>(args) as IUnitOfWork<IDbContext>;
+                _unitOfWorkDictionary[context] = GetInstance<IUnitOfWork<TContext>>(args) as IUnitOfWork<DbContext>;
             }
             return _unitOfWorkDictionary[context] as IUnitOfWork<TContext>;
         }
-        public int Commit<TContext>(TContext context) where TContext : IDbContext
+        public int Commit<TContext>(TContext context) where TContext : DbContext
         {
             if (!_unitOfWorkDictionary.ContainsKey(context))
             {
@@ -36,7 +35,7 @@ namespace RepositoryFoundation.Models
             }
             return _unitOfWorkDictionary[context].Commit();
         }
-        public async Task<int> CommitAsync<TContext>(TContext context) where TContext : IDbContext
+        public async Task<int> CommitAsync<TContext>(TContext context) where TContext : DbContext
         {
             if (!_unitOfWorkDictionary.ContainsKey(context))
             {

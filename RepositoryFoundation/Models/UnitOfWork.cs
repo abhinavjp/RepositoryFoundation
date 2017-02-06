@@ -1,5 +1,4 @@
 ﻿using RepositoryFoundation.Interfaces;
-using RepositoryFoundation.Repository.Interface;
 using StructureMap.Pipeline;
 using System;
 using System.Data.Entity;
@@ -8,7 +7,7 @@ using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigur
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : IDbContext
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
     {
         private readonly TContext _context;
 
