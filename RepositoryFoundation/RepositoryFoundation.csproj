@@ -48,9 +48,15 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ErrorHandler\ProcessResult.cs" />
-    <Compile Include="ErrorHandler\ProcessResultHelper.cs" />
-    <Compile Include="ExpressionBuilder\Builder.cs" />
+    <Compile Include="Helper\ErrorHandler\ProcessResult.cs" />
+    <Compile Include="Helper\ErrorHandler\ProcessResultHelper.cs" />
+    <Compile Include="Helper\ExpressionBuilder\Builder.cs" />
+    <Compile Include="Helper\ExpressionBuilder\Models.cs" />
+    <Compile Include="Helper\ExpressionBuilder\QueryBuilder.cs" />
+    <Compile Include="Helper\FileDirectory\Exceptions.cs" />
+    <Compile Include="Helper\FileDirectory\FileDirectoryHelper.cs" />
+    <Compile Include="Helper\Filters\Validator.cs" />
+    <Compile Include="Helper\ValidationException.cs" />
     <Compile Include="Infrastructure\StructureMapConfigurator.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />

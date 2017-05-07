@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,12 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.2.0
+      *Added Expression Query Builder Helper
+      1.1.2
+      *Added FileDirectory Helper methods
+      1.1.1
+      *Added Where Clause generator Helper in ExpressionBuilder
       1.1.0
       *Added Helper Foundation which include error handler and dynamic expression builder classes
       1.0.7
