@@ -13,7 +13,8 @@ namespace HelperFoundation.Exceptions
         FileDoesNotExist,
         FileDoesNotExistAtSourcePath,
         DirectoryDoesNotExist,
-        DestinationPathDoesNotExist
+        DestinationPathDoesNotExist,
+        DirectoryAlreadyExists
     }
 
     public class DirectoryException: ValidationException
@@ -31,7 +32,7 @@ namespace HelperFoundation.Exceptions
 
         }
 
-        public DirectoryException(string directoryPath) : this(directoryPath, ValidationType.DestinationPathDoesNotExist)
+        public DirectoryException(string directoryPath) : this(directoryPath, ValidationType.DirectoryDoesNotExist)
         {
 
         }
@@ -47,6 +48,11 @@ namespace HelperFoundation.Exceptions
     {
 
         public FileException(string fileName, string sourcePath): base($"{fileName} in {sourcePath}. {FileDirectoryExceptionHelper.GetErrorMessage(ValidationType.FileDoesNotExistAtSourcePath)}")
+        {
+
+        }
+
+        public FileException(string fileName, string sourcePath, ValidationType validationType) : base($"{fileName} in {sourcePath}. {FileDirectoryExceptionHelper.GetErrorMessage(validationType)}")
         {
 
         }
@@ -69,6 +75,8 @@ namespace HelperFoundation.Exceptions
                     return "The file at given path does not exist.";
                 case ValidationType.FileDoesNotExistAtSourcePath:
                     return "File does not exist at the source path.";
+                case ValidationType.DirectoryAlreadyExists:
+                    return "Directory already exists.";
                 default:
                     return "File Directory Operation Failed.";
             }
