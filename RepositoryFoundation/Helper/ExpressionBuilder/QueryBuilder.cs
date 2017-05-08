@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace RepositoryFoundation.Helper.ExpressionBuilder
 {
@@ -391,6 +392,33 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         }
         #endregion
 
+        #region Assignment Expressions
+        public static BinaryExpression Assign(this Expression leftExpresssion, Expression rightExpression)
+        {
+            return Expression.Assign(leftExpresssion, rightExpression);
+        }
+
+        public static BinaryExpression Assign<TValue>(this MemberExpression leftExpresssion, TValue value)
+        {
+            return Expression.Assign(leftExpresssion, GetConstant(value, leftExpresssion));
+        }
+
+        public static BinaryExpression Assign<TValue>(this MemberExpression leftExpresssion, TValue? value) where TValue : struct
+        {
+            return Expression.Assign(leftExpresssion, GetConstant(value, leftExpresssion));
+        }
+
+        public static BinaryExpression Assign<TParameter, TValue>(string propertyName, TValue value)
+        {
+            return GetProperty<TParameter>(propertyName).Assign(value);
+        }
+
+        public static BinaryExpression Assign<TParameter, TValue>(string propertyName, TValue? value) where TValue : struct
+        {
+            return GetProperty<TParameter>(propertyName).Assign(value);
+        }
+        #endregion
+
         #region Object Expressions
         public static ParameterExpression CreateObject<T>()
         {
@@ -649,7 +677,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
             return memberExpression.Contains(constantExpression);
         }
 
-        public static MethodCallExpression Contains<TValue>(this MemberExpression memberExpression, TValue? value) where TValue: struct
+        public static MethodCallExpression Contains<TValue>(this MemberExpression memberExpression, TValue? value) where TValue : struct
         {
             var constantExpression = GetConstant(value, memberExpression);
             return memberExpression.Contains(constantExpression);
@@ -701,6 +729,29 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         {
             var constantExpression = GetConstant(value, memberExpression);
             return memberExpression.EndsWith(constantExpression);
+        }
+
+        public static MethodCallExpression Call<TSource>(string methodName, params object[] arguments)
+        {
+            var argumentExpressions = arguments.Select(arg => GetConstant(arg)).ToArray();
+            return Expression.Call(typeof(TSource).GetMethod(methodName), argumentExpressions);
+        }
+
+        public static MethodCallExpression Call<TSource>(string methodName, Type[] types, params object[] arguments)
+        {
+            var argumentExpressions = arguments.Select(arg => GetConstant(arg)).ToArray();
+            return Expression.Call(typeof(TSource), methodName, types, argumentExpressions);
+        }
+
+        public static MethodCallExpression Call<TSource, TGeneric>(string methodName, params object[] arguments)
+        {
+            return Call<TSource>(methodName, new[] { typeof(TGeneric) }, arguments);
+        }
+
+        public static MethodCallExpression Call(this object callingObject, string methodName, Type sourceType, params object[] arguments)
+        {
+            var argumentExpressions = arguments.Select(arg => GetConstant(arg)).ToArray();
+            return Expression.Call(sourceType, methodName, new[] { callingObject.GetType() }, argumentExpressions);
         }
         #endregion
 

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,8 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.2.2
+      *Added few assignment helpers in Expression Query Builder
       1.2.1
       *Fixed File Directory Helper and now it does not use any error handler
       1.2.0
