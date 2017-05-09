@@ -21,7 +21,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T Compile<T>(Expression expression)
+        public static T Compile<T>(this Expression expression)
         {
             return Expression.Lambda<T>(expression).Compile();
         }
@@ -31,14 +31,38 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Expression<T> GetExpressionLambda<T>(Expression expression)
+        public static Expression<T> GetExpressionLambda<T>(this Expression expression)
         {
             return Expression.Lambda<T>(expression);
         }
 
-        public static Expression GetExpressionLambda(Expression expression)
+        public static Expression GetExpressionLambda(this Expression expression)
         {
             return Expression.Lambda(expression);
+        }
+        /// <summary>
+        /// Get the final compiled lambda expression in a specified format using Parameter Expression
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static T Compile<T>(this Expression expression, params ParameterExpression[] parameterExpressions)
+        {
+            return Expression.Lambda<T>(expression, parameterExpressions).Compile();
+        }
+
+        /// <summary>
+        /// Get the generated expression lambda in a specified format using Parameter Expression
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static Expression<T> GetExpressionLambda<T>(this Expression expression, params ParameterExpression[] parameterExpressions)
+        {
+            return Expression.Lambda<T>(expression, parameterExpressions);
+        }
+
+        public static Expression GetExpressionLambda(this Expression expression, params ParameterExpression[] parameterExpressions)
+        {
+            return Expression.Lambda(expression, parameterExpressions);
         }
         #endregion
 
@@ -48,7 +72,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression Equal<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression Equal<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.Equal(memberExpression, constantExpression);
@@ -83,7 +107,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression Equal<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression Equal<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return memberExpression.Equal(value);
@@ -120,7 +144,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression NotEqual<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression NotEqual<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.NotEqual(memberExpression, constantExpression);
@@ -155,7 +179,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression NotEqual<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression NotEqual<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return memberExpression.NotEqual(value);
@@ -192,7 +216,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression GreaterThan<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression GreaterThan<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.GreaterThan(memberExpression, constantExpression);
@@ -218,7 +242,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression GreaterThan<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression GreaterThan<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return memberExpression.GreaterThan(value);
@@ -243,7 +267,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression GreaterThanOrEqual<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression GreaterThanOrEqual<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.GreaterThanOrEqual(memberExpression, constantExpression);
@@ -269,7 +293,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression GreaterThanOrEqual<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression GreaterThanOrEqual<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return memberExpression.GreaterThanOrEqual(value);
@@ -294,7 +318,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression LessThan<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression LessThan<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.LessThan(memberExpression, constantExpression);
@@ -320,7 +344,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression LessThan<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression LessThan<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return memberExpression.LessThan(value);
@@ -345,7 +369,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
-        public static BinaryExpression LessThanOrEqual<T>(this MemberExpression memberExpression, T value) where T : struct
+        public static BinaryExpression LessThanOrEqual<T>(this MemberExpression memberExpression, T value)
         {
             var constantExpression = GetConstant(value, memberExpression);
             return Expression.LessThanOrEqual(memberExpression, constantExpression);
@@ -371,7 +395,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <param name="propertyName"></param>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static BinaryExpression LessThanOrEqual<TParameter, TValue>(string propertyName, TValue value) where TValue : struct
+        public static BinaryExpression LessThanOrEqual<TParameter, TValue>(string propertyName, TValue value)
         {
             var memberExpression = GetProperty<TParameter>(propertyName);
             return LessThanOrEqual(memberExpression, value);
@@ -420,9 +444,13 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         #endregion
 
         #region Object Expressions
+        public static ParameterExpression CreateObject<T>(string parameterName)
+        {
+            return Expression.Parameter(typeof(T), parameterName);
+        }
         public static ParameterExpression CreateObject<T>()
         {
-            return Expression.Parameter(typeof(T), "tParam");
+            return CreateObject<T>("tParam");
         }
 
         public static MemberExpression GetProperty(string propertyName, ParameterExpression parameterExpression)
@@ -755,6 +783,108 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         }
         #endregion
 
+        #region Constructor Expressions
+        public static NewExpression Construct(this Type type)
+        {
+            return Expression.New(type);
+        }
+        public static NewExpression Construct(this Type type, params Expression[] argumentExpressions)
+        {
+            return Expression.New(type.GetConstructor(argumentExpressions.Select(arg => arg.Type).ToArray()), argumentExpressions);
+        }
+        public static NewExpression Construct(this Type type, params object[] values)
+        {
+            return Expression.New(type.GetConstructor(values.Select(value => value.GetType()).ToArray()), values.Select(value => GetConstant(value)).ToArray());
+        }
+        #endregion
+
+        #region Return Expressions
+        public static LabelTarget Label<T>()
+        {
+            return Expression.Label(typeof(T));
+        }
+
+        public static LabelTarget Label<T>(this T tObject)
+        {
+            return Expression.Label(tObject.GetType());
+        }
+
+        public static LabelTarget Label(this Type type)
+        {
+            return Expression.Label(type);
+        }
+
+        public static LabelTarget Label()
+        {
+            return Expression.Label();
+        }
+
+        public static LabelExpression Label(this LabelTarget labelTarget)
+        {
+            return Expression.Label(labelTarget);
+        }
+
+        public static LabelExpression LabelExpression()
+        {
+            return Label(Label());
+        }
+
+        public static Expression Return<T>()
+        {
+            return Expression.Return(Label<T>());
+        }
+
+        public static Expression Return<T>(this ParameterExpression parameterExpression)
+        {
+            return Expression.Return(Label<T>(), parameterExpression, typeof(T));
+        }
+
+        public static Expression Return(this ParameterExpression parameterExpression)
+        {
+            return Expression.Return(Label(parameterExpression.Type), parameterExpression, parameterExpression.Type);
+        }
+
+        public static Expression Return(this ParameterExpression parameterExpression, LabelTarget labelTarget)
+        {
+            return Expression.Return(labelTarget, parameterExpression, parameterExpression.Type);
+        }
+        #endregion
+
+        #region Variable Creation Expression
+        public static ParameterExpression CreateVariable(this Type type, string variableName)
+        {
+            return Expression.Variable(type, variableName);
+        }
+        public static ParameterExpression CreateVariable<T>(string variableName)
+        {
+            return Expression.Variable(typeof(T), variableName);
+        }
+        public static ParameterExpression CreateVariable<T>(this T tObj, string variableName)
+        {
+            return Expression.Variable(tObj.GetType(), variableName);
+        }
+        public static ParameterExpression CreateVariable(this Expression expression, string variableName)
+        {
+            return Expression.Variable(expression.Type, variableName);
+        }
+        public static ParameterExpression CreateVariable(this Type type)
+        {
+            return CreateVariable(type, $"var_{type.Name}");
+        }
+        public static ParameterExpression CreateVariable<T>()
+        {
+            return CreateVariable(typeof(T), $"var_{typeof(T).Name}");
+        }
+        public static ParameterExpression CreateVariable<T>(this T tObj)
+        {
+            return CreateVariable(tObj.GetType(), $"var_{tObj.GetType().Name}");
+        }
+        public static ParameterExpression CreateVariable(this Expression expression)
+        {
+            return CreateVariable(expression.Type, $"var_{expression.Type.Name}");
+        }
+        #endregion
+
         #region Get Lambdas For Linq
 
         /// <summary>
@@ -764,9 +894,9 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static Func<T, bool> GetConditionalLambda<T>(Expression expression)
+        public static Func<T, bool> GetConditionalLambda<T>(this Expression expression)
         {
-            return Compile<Func<T, bool>>(expression);
+            return expression.Compile<Func<T, bool>>();
         }
 
         /// <summary>
@@ -777,9 +907,34 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TResultOrKey"></typeparam>
         /// <returns></returns>
-        public static Func<TSource, TResultOrKey> GetSelectiveLambda<TSource, TResultOrKey>(Expression expression)
+        public static Func<TSource, TResultOrKey> GetSelectiveLambda<TSource, TResultOrKey>(this Expression expression)
         {
-            return Compile<Func<TSource, TResultOrKey>>(expression);
+            return expression.Compile<Func<TSource, TResultOrKey>>();
+        }
+
+        /// <summary>
+        /// Get conditional lambda expreesion using Parameter Expression
+        /// <para>Used to get lambda for Linq methods like, but not limited to </para>
+        /// <para>Where, First, FirstOrDefault, Count, All, Any, Last, LastOrDefault, Single, SingleOrDefault, SkipWhile or TakeWhile</para>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static Func<T, bool> GetConditionalLambda<T>(this Expression expression, params ParameterExpression[] parameterExpressions)
+        {
+            return expression.Compile<Func<T, bool>>(parameterExpressions);
+        }
+
+        /// <summary>
+        /// Get a selective lambda expression using Parameter Expression
+        /// </summary>
+        /// <para>Used to get lambda for Linq methods like, but not limited to </para>
+        /// <para>Select, Max, Min and GroupBy</para>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TResultOrKey"></typeparam>
+        /// <returns></returns>
+        public static Func<TSource, TResultOrKey> GetSelectiveLambda<TSource, TResultOrKey>(this Expression expression, params ParameterExpression[] parameterExpressions)
+        {
+            return expression.Compile<Func<TSource, TResultOrKey>>(parameterExpressions);
         }
         #endregion
     }

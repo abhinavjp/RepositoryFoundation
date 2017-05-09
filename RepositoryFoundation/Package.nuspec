@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,10 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.2.3
+      *Added few compile helpers using parameter expression in Expression Query Builder
+      *Removed where condition wherever irrelevant
+      *Can now create Deep Copy using Expression Tree
       1.2.2
       *Added few assignment helpers in Expression Query Builder
       1.2.1
