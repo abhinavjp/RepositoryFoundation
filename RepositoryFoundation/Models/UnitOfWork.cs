@@ -56,6 +56,11 @@ namespace RepositoryFoundation.Repository.Models
             return count;
         }
 
+        public void SetLogger(Action<string> logger)
+        {
+            _context.Database.Log = logger;
+        }
+
         public void Dispose()
         {
             if (_context != null)

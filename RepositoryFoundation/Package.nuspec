@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.2.3</version>
+    <version>1.2.4</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,9 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.2.4
+      *Added Query Logger in UnitOfWork Pattern
+      *Added few more bulk operations in Generic Repository
       1.2.3
       *Added few compile helpers using parameter expression in Expression Query Builder
       *Removed where condition wherever irrelevant

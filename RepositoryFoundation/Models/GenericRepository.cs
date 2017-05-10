@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Data.Entity;
 using RepositoryFoundation.Interfaces;
+using System.Collections.Generic;
 
 namespace RepositoryFoundation.Repository.Models
 {
@@ -82,21 +83,54 @@ namespace RepositoryFoundation.Repository.Models
             }
         }
 
+        public void InsertOrUpdateMultiple(params TEntity[] TEntries)
+        {
+            foreach (var entry in TEntries)
+            {
+                InsertOrUpdate(entry);
+            }
+        }
+
+        public void InsertOrUpdateMultiple(IList<TEntity> TEntries)
+        {
+            InsertOrUpdateMultiple(TEntries.ToArray());
+        }
+
+        public virtual void Insert(TEntity TEntry)
+        {
+            dbSet.Add(TEntry);
+        }
+
         public virtual void InsertMultiple(params TEntity[] TEntries)
         {
             dbSet.AddRange(TEntries.Where(t => idGetter(t).Equals(default(TIdType))));
         }
 
+        public void InsertMultiple(IList<TEntity> TEntries)
+        {
+            dbSet.AddRange(TEntries.Where(t => idGetter(t).Equals(default(TIdType))));
+        }
+
+        public virtual void Update(TEntity TEntry)
+        {
+            if (context.Entry(TEntry).State == EntityState.Detached)
+            {
+                dbSet.Attach(TEntry);
+            }
+            context.Entry(TEntry).State = EntityState.Modified;
+        }
+
         public virtual void UpdateMultiple(params TEntity[] TEntries)
         {
-           foreach(var TEntry in TEntries)
+            foreach (var TEntry in TEntries)
             {
-                if (context.Entry(TEntry).State == EntityState.Detached)
-                {
-                    dbSet.Attach(TEntry);
-                }
-                context.Entry(TEntry).State = EntityState.Modified;
+                Update(TEntry);
             }
+        }
+
+        public void UpdateMultiple(IList<TEntity> TEntries)
+        {
+            UpdateMultiple(TEntries.ToArray());
         }
 
         public virtual void Delete(TIdType id)

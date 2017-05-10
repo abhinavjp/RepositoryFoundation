@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,8 +17,14 @@ namespace RepositoryFoundation.Interfaces
         bool HasAny(Expression<Func<TEntity, bool>> conditionParam);
         bool HasAny();
         void InsertOrUpdate(TEntity TEntry);
+        void InsertOrUpdateMultiple(params TEntity[] TEntries);
+        void InsertOrUpdateMultiple(IList<TEntity> TEntries);
+        void Insert(TEntity TEntry);
         void InsertMultiple(params TEntity[] TEntries);
+        void InsertMultiple(IList<TEntity> TEntries);
+        void Update(TEntity TEntry);
         void UpdateMultiple(params TEntity[] TEntries);
+        void UpdateMultiple(IList<TEntity> TEntries);
         void Delete(TIdType id);
         void DeleteMultiple(params TIdType[] id);
     }
