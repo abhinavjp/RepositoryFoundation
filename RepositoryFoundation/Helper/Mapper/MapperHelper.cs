@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using RepositoryFoundation.Helper.ExpressionBuilder;
 using System.Linq.Expressions;
 
@@ -25,7 +21,7 @@ namespace RepositoryFoundation.Helper.Mapper
             var propertyInfos = source.GetType().GetProperties();
             if (!propertyInfos.Any()) return null;
 
-            List<Expression> expressions = new List<Expression>();
+            var expressions = new List<Expression>();
             var newObjectExpression = source.GetType().Construct();
             var newObjParamExpression = QueryBuilder.CreateObject<T>("newObjParam");
             expressions.Add(newObjParamExpression.Assign(newObjectExpression));
@@ -39,7 +35,7 @@ namespace RepositoryFoundation.Helper.Mapper
 
                 if (valType.IsReferenceType() && !valType.IsString())
                 {
-                    expressions.Add(QueryBuilder.GetProperty(propInfo.Name, newObjParamExpression).Assign(value.Call("CreateDeepCopy", typeof(MapperHelper), source)));
+                    expressions.Add(QueryBuilder.GetProperty(propInfo.Name, newObjParamExpression).Assign(value.Call(nameof(CreateDeepCopy), typeof(MapperHelper), source)));
                 }
                 else
                 {

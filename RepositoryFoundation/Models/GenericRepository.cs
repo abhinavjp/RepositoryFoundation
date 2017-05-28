@@ -15,9 +15,9 @@ namespace RepositoryFoundation.Repository.Models
 
         public GenericRepository(TContext context, Func<TEntity, TIdType> idGetter)
         {
-            this.context = context;
+            this.context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
             this.dbSet = context.Set<TEntity>();
-            this.idGetter = idGetter;
+            this.idGetter = idGetter ?? throw new ArgumentNullException(nameof(idGetter), "The func delegate through which Id can be fetched was not supplied");
         }
 
         public virtual IQueryable<TEntity> GetAll()
@@ -143,6 +143,16 @@ namespace RepositoryFoundation.Repository.Models
         {
             var item = dbSet.Where(tw => id.Contains(idGetter(tw)));
             dbSet.RemoveRange(item);
+        }
+
+        public void SetCommandTimeout(int timeOut)
+        {
+            context.Database.CommandTimeout = timeOut;
+        }
+
+        public void SetLogger(Action<string> logger)
+        {
+            context.Database.Log = logger;
         }
     }
 }

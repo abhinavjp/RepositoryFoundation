@@ -16,5 +16,6 @@ namespace RepositoryFoundation.Interfaces
         int Commit();
         Task<int> CommitAsync();
         void SetLogger(Action<string> logger);
+        void SetCommandTimeout(int timeOut);
     }
 }

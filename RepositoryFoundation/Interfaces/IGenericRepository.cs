@@ -27,5 +27,7 @@ namespace RepositoryFoundation.Interfaces
         void UpdateMultiple(IList<TEntity> TEntries);
         void Delete(TIdType id);
         void DeleteMultiple(params TIdType[] id);
+        void SetCommandTimeout(int timeOut);
+        void SetLogger(Action<string> logger);
     }
 }

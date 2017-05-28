@@ -9,15 +9,20 @@ namespace RepositoryFoundation.Repository.Models
 {
     public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
     {
-        private readonly TContext _context;
-
-        public UnitOfWork(TContext context)
+        private TContext _context;
+        public static IUnitOfWork<TContext> NewInstance
         {
-            if (context == null)
+            get
             {
-                throw new ArgumentNullException("Context was not supplied");
+                var context = Activator.CreateInstance<TContext>();
+                var args = new ExplicitArguments();
+                args.Set(context);
+                return GetInstance<IUnitOfWork<TContext>>(args);
             }
-            _context = context;
+        }
+        private UnitOfWork(TContext context)
+        {
+            _context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
         }
         public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class
         {
@@ -38,7 +43,7 @@ namespace RepositoryFoundation.Repository.Models
 
         public int CommitMultiple(params IUnitOfWork[] unitOfWorks)
         {
-            int count = 0;
+            var count = 0;
             foreach (var unitOfWork in unitOfWorks)
             {
                 count += unitOfWork.Commit();
@@ -48,7 +53,7 @@ namespace RepositoryFoundation.Repository.Models
 
         public async Task<int> CommitMultipleAsync(params IUnitOfWork[] unitOfWorks)
         {
-            int count = 0;
+            var count = 0;
             foreach (var unitOfWork in unitOfWorks)
             {
                 count += await unitOfWork.CommitAsync();
@@ -56,9 +61,14 @@ namespace RepositoryFoundation.Repository.Models
             return count;
         }
 
-        public void SetLogger(Action<string> logger)
+        public virtual void SetLogger(Action<string> logger)
         {
             _context.Database.Log = logger;
+        }
+
+        public void SetCommandTimeout(int timeOut)
+        {
+            _context.Database.CommandTimeout = timeOut;
         }
 
         public void Dispose()

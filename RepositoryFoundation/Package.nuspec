@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.2.4</version>
+    <version>1.2.5</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,9 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.2.5
+      *Added a method to set timeout of query executions in both repositories and unit of work
+      *Now no need to write extra lines to provide unit of work pattern your context, instead use a static property of NewInstance
       1.2.4
       *Added Query Logger in UnitOfWork Pattern
       *Added few more bulk operations in Generic Repository
