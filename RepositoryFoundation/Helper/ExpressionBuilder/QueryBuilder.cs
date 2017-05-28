@@ -504,6 +504,22 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
 
         #region Connecting Expressions
 
+        public static Expression<T> OrElse<T>(this Expression<T> expr1,
+                                                      Expression<T> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<T>
+                  (Expression.OrElse(expr1.Body, invokedExpr), expr1.Parameters);
+        }
+
+        public static Expression<T> AndAlso<T>(this Expression<T> expr1,
+                                                      Expression<T> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<T>
+                  (Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
+        }
+
         public static BinaryExpression AndAlso(this Expression leftExpression, Expression rightExpression)
         {
             if (leftExpression == null)

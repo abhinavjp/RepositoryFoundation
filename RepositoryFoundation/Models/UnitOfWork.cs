@@ -15,9 +15,7 @@ namespace RepositoryFoundation.Repository.Models
             get
             {
                 var context = Activator.CreateInstance<TContext>();
-                var args = new ExplicitArguments();
-                args.Set(context);
-                return GetInstance<IUnitOfWork<TContext>>(args);
+                return new UnitOfWork<TContext>(context);
             }
         }
         private UnitOfWork(TContext context)

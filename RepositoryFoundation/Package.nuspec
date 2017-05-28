@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.2.5</version>
+    <version>1.3.1</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,10 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.3.1
+      *Created methods for easy linking OR and ELS when using linq expressions
+      1.3.0
+      *Solved the issue of repository not initializing
       1.2.5
       *Added a method to set timeout of query executions in both repositories and unit of work
       *Now no need to write extra lines to provide unit of work pattern your context, instead use a static property of NewInstance
