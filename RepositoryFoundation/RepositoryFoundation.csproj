@@ -61,6 +61,7 @@
     <Compile Include="Helper\Filters\Validator.cs" />
     <Compile Include="Helper\Mapper\MapperHelper.cs" />
     <Compile Include="Helper\ValidationException.cs" />
+    <Compile Include="Helper\XmlHandler\XmlBuilder.cs" />
     <Compile Include="Infrastructure\StructureMapConfigurator.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
@@ -71,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="content\web.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NuGetPackage.ps1" />
     <None Include="NuGetSetup.ps1" />
     <None Include="NuGet.exe" />
@@ -101,6 +105,7 @@
     <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

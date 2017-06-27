@@ -40,6 +40,7 @@
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -56,6 +57,9 @@
   <ItemGroup>
     <Compile Include="MapperHelperTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryBuilderTests.cs" />
+    <Compile Include="TestObjectModels.cs" />
+    <Compile Include="XmlBuilderTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RepositoryFoundation\RepositoryFoundation.csproj">

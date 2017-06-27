@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="TestVariable" value="Breaking News, World News, and Multimedia" xdt:Transform="Replace"/>
+  </appSettings>
+</configuration>

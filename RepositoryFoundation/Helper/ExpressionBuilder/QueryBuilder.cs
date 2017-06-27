@@ -10,10 +10,6 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
 {
     public static class QueryBuilder
     {
-        static QueryBuilder()
-        {
-
-        }
 
         #region Compiling methods
         /// <summary>
@@ -448,6 +444,7 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         {
             return Expression.Parameter(typeof(T), parameterName);
         }
+
         public static ParameterExpression CreateObject<T>()
         {
             return CreateObject<T>("tParam");
@@ -503,23 +500,6 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
         #endregion
 
         #region Connecting Expressions
-
-        public static Expression<T> OrElse<T>(this Expression<T> expr1,
-                                                      Expression<T> expr2)
-        {
-            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
-            return Expression.Lambda<T>
-                  (Expression.OrElse(expr1.Body, invokedExpr), expr1.Parameters);
-        }
-
-        public static Expression<T> AndAlso<T>(this Expression<T> expr1,
-                                                      Expression<T> expr2)
-        {
-            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
-            return Expression.Lambda<T>
-                  (Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
-        }
-
         public static BinaryExpression AndAlso(this Expression leftExpression, Expression rightExpression)
         {
             if (leftExpression == null)
@@ -556,6 +536,12 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
             return expression.AndAlso(combinedExpressions);
         }
 
+        public static Expression<T> AndAlso<T>(this Expression<T> expr1, Expression<T> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<T>(Expression.AndAlso(expr1.Body, invokedExpr), expr1.Parameters);
+        }
+
         public static BinaryExpression OrElse(this Expression leftExpression, Expression rightExpression)
         {
             if (leftExpression == null)
@@ -590,6 +576,12 @@ namespace RepositoryFoundation.Helper.ExpressionBuilder
                 throw new ArgumentNullException(nameof(leftExpression), "Null not allowed");
             var combinedExpressions = OrElse(rightExpressions);
             return leftExpression.OrElse(combinedExpressions);
+        }
+
+        public static Expression<T> OrElse<T>(this Expression<T> expr1, Expression<T> expr2)
+        {
+            var invokedExpr = Expression.Invoke(expr2, expr1.Parameters.Cast<Expression>());
+            return Expression.Lambda<T>(Expression.OrElse(expr1.Body, invokedExpr), expr1.Parameters);
         }
 
         public static BlockExpression CreateBlock(this Expression leftExpression, Expression rightExpression)

@@ -10,6 +10,7 @@ namespace RepositoryFoundation.Repository.Models
     public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
     {
         private TContext _context;
+
         public static IUnitOfWork<TContext> NewInstance
         {
             get
@@ -18,10 +19,12 @@ namespace RepositoryFoundation.Repository.Models
                 return new UnitOfWork<TContext>(context);
             }
         }
+
         private UnitOfWork(TContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
         }
+
         public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class
         {
             var args = new ExplicitArguments();
@@ -34,6 +37,7 @@ namespace RepositoryFoundation.Repository.Models
         {
             return _context.SaveChanges();
         }
+
         public async Task<int> CommitAsync()
         {
             return await _context.SaveChangesAsync();

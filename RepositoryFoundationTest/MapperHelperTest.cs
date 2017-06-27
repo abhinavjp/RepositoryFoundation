@@ -27,27 +27,5 @@ namespace RepositoryFoundationTest
             Assert.AreNotEqual(testObjCopy.Name, testObj.Name);
         }
     }
-
-    public class TestObject
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
-    }
-
-    public class TestNestedObject
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public TestObject TestingObject { get; set; }
-    }
-
-    public class TestNestedListObject
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public List<TestObject> TestingObject { get; set; }
-    }
+    
 }
