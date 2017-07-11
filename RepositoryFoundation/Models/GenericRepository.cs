@@ -20,12 +20,9 @@ namespace RepositoryFoundation.Repository.Models
             this.idGetter = idGetter ?? throw new ArgumentNullException(nameof(idGetter), "The func delegate through which Id can be fetched was not supplied");
         }
 
-        public virtual IQueryable<TEntity> GetAll()
-        {
-            return dbSet;
-        }
+        public virtual IQueryable<TEntity> All => dbSet;
 
-        public virtual IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             IQueryable<TEntity> query = dbSet;
             foreach (var includeProperty in includeProperties)
@@ -35,29 +32,29 @@ namespace RepositoryFoundation.Repository.Models
             return query;
         }
 
-        public virtual IQueryable<TEntity> FindWhere(Expression<Func<TEntity, bool>> conditionParam)
+        public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam)
         {
             IQueryable<TEntity> query = dbSet;
             query = query.Where(conditionParam);
             return query;
         }
 
-        public virtual TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> conditionParam)
+        public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> conditionParam)
         {
             return dbSet.FirstOrDefault(conditionParam);
         }
 
-        public virtual TEntity GetFirstOrDefault()
+        public virtual TEntity FirstOrDefault()
         {
             return dbSet.FirstOrDefault();
         }
 
-        public virtual bool HasAny(Expression<Func<TEntity, bool>> conditionParam)
+        public virtual bool Any(Expression<Func<TEntity, bool>> conditionParam)
         {
             return dbSet.Any(conditionParam);
         }
 
-        public virtual bool HasAny()
+        public virtual bool Any()
         {
             return dbSet.Any();
         }

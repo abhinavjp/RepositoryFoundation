@@ -8,14 +8,14 @@ namespace RepositoryFoundation.Interfaces
 {
     public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext
     {
-        IQueryable<TEntity> GetAll();
-        IQueryable<TEntity> GetAllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
-        IQueryable<TEntity> FindWhere(Expression<Func<TEntity, bool>> conditionParam);
-        TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> conditionParam);
-        TEntity GetFirstOrDefault();
+        IQueryable<TEntity> All { get; }
+        IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
+        IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam);
+        TEntity FirstOrDefault(Expression<Func<TEntity, bool>> conditionParam);
+        TEntity FirstOrDefault();
         TEntity Find(int id);
-        bool HasAny(Expression<Func<TEntity, bool>> conditionParam);
-        bool HasAny();
+        bool Any(Expression<Func<TEntity, bool>> conditionParam);
+        bool Any();
         void InsertOrUpdate(TEntity TEntry);
         void InsertOrUpdateMultiple(params TEntity[] TEntries);
         void InsertOrUpdateMultiple(IList<TEntity> TEntries);
