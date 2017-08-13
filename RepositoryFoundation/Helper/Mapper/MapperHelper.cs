@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using RepositoryFoundation.Helper.ExpressionBuilder;
 using System.Linq.Expressions;
+using System.Collections;
+using AutoMapper.QueryableExtensions;
 
 namespace RepositoryFoundation.Helper.Mapper
 {
@@ -51,6 +53,46 @@ namespace RepositoryFoundation.Helper.Mapper
             var blockExpressions = Expression.Block(new[] { newObjParamExpression }, expressions);
             var lambda = blockExpressions.Compile<Func<T,T>>(paramExpression);
             return lambda(source);
+        }
+
+        public static TDestination MapTo<TSource, TDestination>(this TSource source)
+        {
+            return AutoMapper.Mapper.Map<TSource, TDestination>(source);
+        }
+
+        public static TDestination MapTo<TDestination>(this object source)
+        {
+            return AutoMapper.Mapper.Map<TDestination>(source);
+        }
+
+        public static IEnumerable<TDestination> MapTo<TSource, TDestination>(this IEnumerable<TSource> source)
+        {
+            return source.MapTo<IEnumerable<TSource>, IEnumerable<TDestination>>();
+        }
+
+        public static IEnumerable<TDestination> MapTo<TDestination>(this IEnumerable source)
+        {
+            return source.MapTo<TDestination>();
+        }
+
+        public static IList<TDestination> MapTo<TSource, TDestination>(this IList<TSource> source)
+        {
+            return source.MapTo<IList<TSource>, IList<TDestination>>();
+        }
+
+        public static IList<TDestination> MapTo<TDestination>(this IList source)
+        {
+            return source.MapTo<TDestination>();
+        }
+
+        public static IQueryable<TDestination> MapTo<TSource, TDestination>(this IQueryable<TSource> source)
+        {
+            return source.MapTo<TDestination>();
+        }
+
+        public static IQueryable<TDestination> MapTo<TDestination>(this IQueryable source)
+        {
+            return source.ProjectTo<TDestination>();
         }
 
         private static bool IsReferenceType(this Type type)
