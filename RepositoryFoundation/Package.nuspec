@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,8 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.4.1
+      *Now use MapTo instead of Mapper.Map
       1.4.0
       *Updated the properties and method names to better suit the purpose in Generic Repository
       1.3.2
