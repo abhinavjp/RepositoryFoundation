@@ -84,6 +84,17 @@ namespace HelperFoundation.FileDirectory
             }
         }
 
+        /// <summary>>
+        /// Helps in moving a file if it exists or else will not do anything
+        /// </summary>
+        /// <param name="fileName">The name of the file with extension to be moved</param>
+        /// <param name="sourcePath">The full path of the directory where the file exists</param>
+        /// <param name="targetPath">The full path of the directory where the file has to be moved</param>
+        public static void MoveFileIfExists(string fileName, string sourcePath, string targetPath)
+        {
+            MoveFileIfExists(fileName, sourcePath, targetPath, false);
+        }
+
         /// <summary>
         /// Helps in deleting a directory if it exists or else will not do anything.
         /// All the subdirectories and files in the directory will also be deleted.

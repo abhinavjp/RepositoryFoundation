@@ -20,6 +20,10 @@ namespace RepositoryFoundationTest
             var testObj = obj as TestObject;
             return testObj.Id == Id && testObj.Name == Name && testObj.DateOfBirth == DateOfBirth;
         }
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 
     public class TestNestedObject
@@ -37,6 +41,11 @@ namespace RepositoryFoundationTest
             var testObj = obj as TestNestedObject;
             return testObj.Id == Id && testObj.Name == Name && testObj.DateOfBirth == DateOfBirth && testObj.TestingObject.Equals(TestingObject);
         }
+
+        public override int GetHashCode()
+        {
+            return Id;
+        }
     }
 
     public class TestNestedListObject
@@ -53,6 +62,10 @@ namespace RepositoryFoundationTest
             }
             var testObj = obj as TestNestedListObject;
             return testObj.Id == Id && testObj.Name == Name && testObj.DateOfBirth == DateOfBirth && testObj.TestingObject.All(a=>TestingObject.Any(ta => ta.Equals(a)));
+        }
+        public override int GetHashCode()
+        {
+            return Id;
         }
     }
 }

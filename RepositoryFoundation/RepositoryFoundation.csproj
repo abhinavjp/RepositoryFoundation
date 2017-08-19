@@ -51,6 +51,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Helper\CryptographyHelper\HashCryptography.cs" />
+    <Compile Include="Helper\CryptographyHelper\AsymmetricCryptography.cs" />
+    <Compile Include="Helper\CryptographyHelper\SymmetricCryptography.cs" />
+    <Compile Include="Helper\EncodingHelper\EncodingHelper.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResult.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResultHelper.cs" />
     <Compile Include="Helper\ExpressionBuilder\Builder.cs" />
