@@ -57,8 +57,11 @@
     <Compile Include="Helper\DatabaseQueryHelper\DatabaseQueryBuilderModel.cs" />
     <Compile Include="Helper\DatabaseQueryHelper\DatabaseQueryRepository.cs" />
     <Compile Include="Helper\EncodingHelper\EncodingHelper.cs" />
+    <Compile Include="Helper\ErrorHandler\ErrorHandlerEnums.cs" />
+    <Compile Include="Helper\ErrorHandler\ErrorResult.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResult.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResultHelper.cs" />
+    <Compile Include="Helper\ErrorHandler\ServerValidationException.cs" />
     <Compile Include="Helper\ExpressionBuilder\Builder.cs" />
     <Compile Include="Helper\ExpressionBuilder\Models.cs" />
     <Compile Include="Helper\ExpressionBuilder\QueryBuilder.cs" />

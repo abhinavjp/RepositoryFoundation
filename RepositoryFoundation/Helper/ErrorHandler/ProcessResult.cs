@@ -7,67 +7,34 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Validation;
+using HelperFoundation.ErrorHandler;
+using RepositoryFoundation.Helper.ErrorHandler;
 
 namespace HelperFoundation.ErrorHandler
 {
     public class ProcessResult<T> : ProcessResult
     {
         public T Result { get; set; }
-
-        public static new ProcessResult<T> GetExceptionResult(Exception ex)
-        {
-            var errors = ExtractErrors(ex, new List<string>());
-            return new ProcessResult<T> { Errors = errors, StatusCode = HttpStatusCode.InternalServerError }; ;
-        }
     }
     public class ProcessResult
     {
-        public static ProcessResult AllOk
+        public int ResultId { get; set; }
+        public ErrorStatusCode StatusCode { get; set; }
+        public string SuccessMessage { get; set; }
+        public List<ErrorResult> Errors { get; set; }
+        public static ProcessResult SuccessResult => new ProcessResult();
+        public static ProcessResult GetSuccessResult(string message)
         {
-            get
-            {
-                return new ProcessResult();
-            }
+            return GetSuccessResult(default(int), message);
         }
-        public static ProcessResult AllOkWithMessage(string message)
+        public static ProcessResult GetSuccessResult(int id)
         {
-            return new ProcessResult { Message = message };
+            return GetSuccessResult(id, null);
         }
-        public static ProcessResult AllOkWitId(int id)
+        public static ProcessResult GetSuccessResult(int id, string message)
         {
-            return new ProcessResult<int> { Result = id };
+            return new ProcessResult { ResultId = id, SuccessMessage = message };
         }
-        public HttpStatusCode StatusCode { get; set; }
-        public static List<string> ExtractErrors(Exception ex, List<string> errors)
-        {
-            if (ex.InnerException == null)
-            {
-                errors.Add(ex.Message);
-            }
-            else if (ex is DbEntityValidationException)
-            {
-                var entityException = (DbEntityValidationException)ex;
-                if (entityException.EntityValidationErrors != null)
-                {
-                    entityException.EntityValidationErrors.ToList().ForEach(validationError =>
-                    {
-                        errors.AddRange(validationError.ValidationErrors.Select(esv => esv.ErrorMessage));
-                    });
-                }
-            }
-            else
-            {
-                errors = ExtractErrors(ex.InnerException, errors);
-            }
-            return errors;
-        }
-        public static ProcessResult GetExceptionResult(Exception ex)
-        {
-            var errors = ExtractErrors(ex, new List<string>());
-            return new ProcessResult { Errors = errors, StatusCode = HttpStatusCode.InternalServerError };
-        }
-        public string Message { get; set; }
-        public List<string> Errors { get; set; }
         public bool Success
         {
             get
@@ -75,9 +42,6 @@ namespace HelperFoundation.ErrorHandler
                 return Errors == null || Errors.Any();
             }
         }
-        public override string ToString()
-        {
-            return string.Join(",", Errors.ToArray());
-        }
+        public Dictionary<string, object> ExternalData { get; set; }
     }
 }
