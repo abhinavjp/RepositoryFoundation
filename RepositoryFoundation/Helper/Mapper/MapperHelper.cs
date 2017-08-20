@@ -75,12 +75,12 @@ namespace RepositoryFoundation.Helper.Mapper
             return source.MapTo<TDestination>();
         }
 
-        public static IList<TDestination> MapTo<TSource, TDestination>(this IList<TSource> source)
+        public static List<TDestination> MapTo<TSource, TDestination>(this IList<TSource> source)
         {
-            return source.MapTo<IList<TSource>, IList<TDestination>>();
+            return source.MapTo<IList<TSource>, List<TDestination>>();
         }
 
-        public static IList<TDestination> MapTo<TDestination>(this IList source)
+        public static List<TDestination> MapTo<TDestination>(this IList source)
         {
             return source.MapTo<TDestination>();
         }
