@@ -54,6 +54,8 @@
     <Compile Include="Helper\CryptographyHelper\HashCryptography.cs" />
     <Compile Include="Helper\CryptographyHelper\AsymmetricCryptography.cs" />
     <Compile Include="Helper\CryptographyHelper\SymmetricCryptography.cs" />
+    <Compile Include="Helper\DatabaseQueryHelper\DatabaseQueryBuilderModel.cs" />
+    <Compile Include="Helper\DatabaseQueryHelper\DatabaseQueryRepository.cs" />
     <Compile Include="Helper\EncodingHelper\EncodingHelper.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResult.cs" />
     <Compile Include="Helper\ErrorHandler\ProcessResultHelper.cs" />
