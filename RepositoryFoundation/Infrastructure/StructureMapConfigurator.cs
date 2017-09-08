@@ -16,6 +16,7 @@ namespace RepositoryFoundation.Repository.Infrastructure
             container.Configure(x =>
             {
                 // Repository
+                x.For(typeof(IUnitOfWork<>)).Use(typeof(UnitOfWork<>));
                 x.For(typeof(IGenericRepository<,,>)).Use(typeof(GenericRepository<,,>));
             });
             isInitialized = true;
@@ -48,6 +49,20 @@ namespace RepositoryFoundation.Repository.Infrastructure
                 Configure();
             }
             return container.GetInstance<T>(args);
+        }
+
+        public static T GetInstance<T>(params object[] args)
+        {
+            var explicitArguments = new ExplicitArguments();
+            foreach (var arg in args)
+            {
+                explicitArguments.Set(arg);
+            }
+            if (!isInitialized)
+            {
+                Configure();
+            }
+            return container.GetInstance<T>(explicitArguments);
         }
     }
 }

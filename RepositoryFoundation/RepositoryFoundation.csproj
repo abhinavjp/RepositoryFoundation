@@ -74,6 +74,8 @@
     <Compile Include="Infrastructure\StructureMapConfigurator.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Models\EntityFrameworkConnectionBuilder.cs" />
+    <Compile Include="Models\EntityFrameworkModelBuilder.cs" />
     <Compile Include="Models\GenericRepository.cs" />
     <Compile Include="Models\UnitOfWork.cs" />
     <Compile Include="Models\UnitOfWorkFactory.cs" />
@@ -113,6 +115,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>

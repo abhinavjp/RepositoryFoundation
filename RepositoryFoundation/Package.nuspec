@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.5.3</version>
+    <version>1.6.0</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -13,6 +13,9 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.6.0
+      *Now unit Of Work will have more constructors
+      *Added a config section so that multiple models can have the same connection string
       1.5.3
       *Process Result Revamped
       1.5.2

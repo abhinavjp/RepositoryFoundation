@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace RepositoryFoundation.Interfaces
 {
-    public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext
+    public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext where TIdType: struct
     {
         IQueryable<TEntity> All { get; }
         IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
