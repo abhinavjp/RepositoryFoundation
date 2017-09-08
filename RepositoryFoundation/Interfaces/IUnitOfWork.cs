@@ -6,7 +6,7 @@ namespace RepositoryFoundation.Interfaces
 {
     public interface IUnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
-        IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class;
+        IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class where TIdType : struct;
         int CommitMultiple(params IUnitOfWork[] unitOfWorks);
         Task<int> CommitMultipleAsync(params IUnitOfWork[] unitOfWorks);
     }

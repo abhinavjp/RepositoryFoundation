@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class GenericRepository<TContext, TEntity, TIdType> : IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext
+    public class GenericRepository<TContext, TEntity, TIdType> : IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext where TIdType : struct
     {
         internal TContext context;
         internal DbSet<TEntity> dbSet;

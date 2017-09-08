@@ -1,36 +1,48 @@
 ﻿using RepositoryFoundation.Interfaces;
-using StructureMap.Pipeline;
 using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigurator;
 
 namespace RepositoryFoundation.Repository.Models
 {
-    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext
+    public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext, new()
     {
-        private TContext _context;
+        private readonly TContext _context;
+        private const string SectionName = "efModelBuilder";
+        private const string DefaultConnectionStringName = "efConnectionString";
 
-        public static IUnitOfWork<TContext> NewInstance
+        public UnitOfWork(string modelName, string connectionStringName)
         {
-            get
+            var efModelBuilderConfiguration = ConfigurationManager.GetSection(SectionName) as EntityFrameworkModelBuilderConfiguration;
+            if (efModelBuilderConfiguration == null)
             {
-                var context = Activator.CreateInstance<TContext>();
-                return new UnitOfWork<TContext>(context);
+                _context = new TContext();
+            }
+            else
+            {
+                var modelConfiguration = efModelBuilderConfiguration.ModelConfigurations[modelName];
+                var nameOrConnectionString = EntityFrameworkConnectionBuilder.CreateEntityFrameworkConnection(modelConfiguration.ModelName,
+                    modelConfiguration.ProviderName, ConfigurationManager.ConnectionStrings[connectionStringName]?.ToString());
+                _context = Activator.CreateInstance(typeof(TContext), nameOrConnectionString) as TContext;
             }
         }
 
-        private UnitOfWork(TContext context)
+        public UnitOfWork(string modelName) :
+            this(modelName, ConfigurationManager.ConnectionStrings[DefaultConnectionStringName]?.ToString())
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
+
         }
 
-        public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class
+        public UnitOfWork()
         {
-            var args = new ExplicitArguments();
-            args.Set(_context);
-            args.Set(idGetter);
-            return GetInstance<IGenericRepository<TContext, TEntity, TIdType>>(args);
+            _context = new TContext();
+        }
+
+        public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class where TIdType : struct
+        {
+            return GetInstance<IGenericRepository<TContext, TEntity, TIdType>>(_context, idGetter);
         }
 
         public int Commit()
