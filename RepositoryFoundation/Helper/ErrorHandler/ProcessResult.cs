@@ -18,8 +18,12 @@ namespace HelperFoundation.ErrorHandler
     }
     public class ProcessResult
     {
+        internal ProcessResult()
+        {
+
+        }
         public int ResultId { get; set; }
-        public ErrorStatusCode StatusCode { get; set; }
+        public ResponseStatusCode StatusCode { get; set; }
         public string SuccessMessage { get; set; }
         public List<ErrorResult> Errors { get; set; }
         public static ProcessResult SuccessResult => new ProcessResult();

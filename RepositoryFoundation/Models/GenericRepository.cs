@@ -32,6 +32,16 @@ namespace RepositoryFoundation.Repository.Models
             return query;
         }
 
+        public virtual IQueryable<TEntity> AllIncluding(params string[] includePropertiesPath)
+        {
+            IQueryable<TEntity> query = dbSet;
+            foreach (var includeProperty in includePropertiesPath)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query;
+        }
+
         public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam)
         {
             IQueryable<TEntity> query = dbSet;

@@ -80,5 +80,7 @@ namespace RepositoryFoundation.Repository.Models
         public string ModelName => (string)this["name"];
         [ConfigurationProperty("provider", IsRequired = true)]
         public string ProviderName => (string)this["provider"];
+        [ConfigurationProperty("connectionStringName", IsRequired = true)]
+        public string ConnectionStringName => (string)this["connectionStringName"];
     }
 }

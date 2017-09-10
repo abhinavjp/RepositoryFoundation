@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigurator;
 
@@ -10,34 +11,31 @@ namespace RepositoryFoundation.Repository.Models
     public class UnitOfWork<TContext> : IUnitOfWork<TContext> where TContext : DbContext, new()
     {
         private readonly TContext _context;
-        private const string SectionName = "efModelBuilder";
-        private const string DefaultConnectionStringName = "efConnectionString";
+        private const string SectionName = "repositoryFoundation";
 
-        public UnitOfWork(string modelName, string connectionStringName)
+        public UnitOfWork(string modelName)
         {
+            if (string.IsNullOrWhiteSpace(modelName))
+            {
+                _context = new TContext();
+            }
             var efModelBuilderConfiguration = ConfigurationManager.GetSection(SectionName) as EntityFrameworkModelBuilderConfiguration;
             if (efModelBuilderConfiguration == null)
             {
+                Debug.WriteLine("Section 'repositoryFoundation' not found in web.config. Reverting to fallback context");
                 _context = new TContext();
             }
             else
             {
                 var modelConfiguration = efModelBuilderConfiguration.ModelConfigurations[modelName];
                 var nameOrConnectionString = EntityFrameworkConnectionBuilder.CreateEntityFrameworkConnection(modelConfiguration.ModelName,
-                    modelConfiguration.ProviderName, ConfigurationManager.ConnectionStrings[connectionStringName]?.ToString());
+                    modelConfiguration.ProviderName, ConfigurationManager.ConnectionStrings[modelConfiguration.ConnectionStringName]?.ToString());
                 _context = Activator.CreateInstance(typeof(TContext), nameOrConnectionString) as TContext;
             }
         }
 
-        public UnitOfWork(string modelName) :
-            this(modelName, ConfigurationManager.ConnectionStrings[DefaultConnectionStringName]?.ToString())
+        public UnitOfWork():this(string.Empty)
         {
-
-        }
-
-        public UnitOfWork()
-        {
-            _context = new TContext();
         }
 
         public IGenericRepository<TContext, TEntity, TIdType> GetRepository<TEntity, TIdType>(Func<TEntity, TIdType> idGetter) where TEntity : class where TIdType : struct

@@ -10,12 +10,12 @@ using static RepositoryFoundation.Repository.Infrastructure.StructureMapConfigur
 
 namespace RepositoryFoundation.Models
 {
-    public class UnitOfWorkFactory
+    public class UnitOfWorkFactory : IDisposable
     {
-        private readonly Dictionary<DbContext, IUnitOfWork<DbContext>> _unitOfWorkDictionary;
+        private readonly Dictionary<object, IUnitOfWork<DbContext>> _unitOfWorkDictionary;
         public UnitOfWorkFactory()
         {
-            _unitOfWorkDictionary = new Dictionary<DbContext, IUnitOfWork<DbContext>>();
+            _unitOfWorkDictionary = new Dictionary<object, IUnitOfWork<DbContext>>();
         }
         public IUnitOfWork<TContext> GetUnitOfWork<TContext>(TContext context) where TContext : DbContext
         {
@@ -45,8 +45,8 @@ namespace RepositoryFoundation.Models
         }
         public int CommitAll()
         {
-            int count = 0;
-            foreach(var unitOfWorkItem in _unitOfWorkDictionary)
+            var count = 0;
+            foreach (var unitOfWorkItem in _unitOfWorkDictionary)
             {
                 count += unitOfWorkItem.Value.Commit();
             }
@@ -54,12 +54,22 @@ namespace RepositoryFoundation.Models
         }
         public async Task<int> CommitAllAsync()
         {
-            int count = 0;
+            var count = 0;
             foreach (var unitOfWorkItem in _unitOfWorkDictionary)
             {
                 count += await unitOfWorkItem.Value.CommitAsync();
             }
             return count;
+        }
+
+        public void Dispose()
+        {
+            foreach (var keyValue in _unitOfWorkDictionary)
+            {
+                keyValue.Value.Dispose();
+                _unitOfWorkDictionary.Remove(keyValue.Key);
+            }
+            GC.SuppressFinalize(this);
         }
     }
 }

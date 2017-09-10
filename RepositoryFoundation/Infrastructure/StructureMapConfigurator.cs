@@ -57,7 +57,7 @@ namespace RepositoryFoundation.Repository.Infrastructure
             var explicitArguments = new ExplicitArguments();
             foreach (var arg in args)
             {
-                explicitArguments.Set(arg);
+                explicitArguments.Set(arg.GetType(),arg);
             }
             if (!isInitialized)
             {

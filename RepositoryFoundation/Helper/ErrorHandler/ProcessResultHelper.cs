@@ -11,8 +11,8 @@ namespace HelperFoundation.ErrorHandler
 {
     public static class ProcessResultHelper
     {
-        private const ErrorStatusCode DefaultValidationStatusCode = ErrorStatusCode.PreconditionFailed;
-        private const ErrorStatusCode FatalValidationStatusCode = ErrorStatusCode.BadRequest;
+        private const ResponseStatusCode DefaultValidationStatusCode = ResponseStatusCode.PreconditionFailed;
+        private const ResponseStatusCode FatalValidationStatusCode = ResponseStatusCode.BadRequest;
         private const ErrorType DefaultValidationErrorType = ErrorType.Validation;
         private const ErrorType FatalValidationErrorType = ErrorType.Fatal;
         #region Postive Results
@@ -26,7 +26,7 @@ namespace HelperFoundation.ErrorHandler
             return new ProcessResult<T> { Result = result, SuccessMessage = message };
         }
 
-        public static ProcessResult<T> GetResult<T>(this T result, string message, ErrorStatusCode statusCode)
+        public static ProcessResult<T> GetResult<T>(this T result, string message, ResponseStatusCode statusCode)
         {
             return new ProcessResult<T> { Result = result, SuccessMessage = message, StatusCode = statusCode };
         }
@@ -44,17 +44,17 @@ namespace HelperFoundation.ErrorHandler
             return GetNegativeResult<T>(DefaultValidationStatusCode, errorType, errorMessage);
         }
 
-        public static ProcessResult<T> GetNegativeResult<T>(ErrorStatusCode statusCode, string errorMessage)
+        public static ProcessResult<T> GetNegativeResult<T>(ResponseStatusCode statusCode, string errorMessage)
         {
             return GetNegativeResult<T>(statusCode, DefaultValidationErrorType, errorMessage);
         }
 
-        public static ProcessResult<T> GetNegativeResult<T>(ErrorStatusCode statusCode, ErrorType errorType, string errorMessage)
+        public static ProcessResult<T> GetNegativeResult<T>(ResponseStatusCode statusCode, ErrorType errorType, string errorMessage)
         {
             return GetNegativeResult<T>(new ErrorResult(errorMessage, errorType).ErrorResultList, statusCode);
         }
 
-        public static ProcessResult<T> GetNegativeResult<T>(List<ErrorResult> errorList, ErrorStatusCode statusCode)
+        public static ProcessResult<T> GetNegativeResult<T>(List<ErrorResult> errorList, ResponseStatusCode statusCode)
         {
             return new ProcessResult<T> { Errors = errorList, StatusCode = statusCode };
         }
@@ -69,17 +69,17 @@ namespace HelperFoundation.ErrorHandler
             return GetNegativeResult(DefaultValidationStatusCode, errorType, errorMessage);
         }
 
-        public static ProcessResult GetNegativeResult(ErrorStatusCode statusCode, string errorMessage)
+        public static ProcessResult GetNegativeResult(ResponseStatusCode statusCode, string errorMessage)
         {
             return GetNegativeResult(statusCode, DefaultValidationErrorType, errorMessage);
         }
 
-        public static ProcessResult GetNegativeResult(ErrorStatusCode statusCode, ErrorType errorType, string errorMessage)
+        public static ProcessResult GetNegativeResult(ResponseStatusCode statusCode, ErrorType errorType, string errorMessage)
         {
             return GetNegativeResult(new ErrorResult(errorMessage, errorType).ErrorResultList, statusCode);
         }
 
-        public static ProcessResult GetNegativeResult(List<ErrorResult> errorList, ErrorStatusCode statusCode)
+        public static ProcessResult GetNegativeResult(List<ErrorResult> errorList, ResponseStatusCode statusCode)
         {
             return new ProcessResult { Errors = errorList, StatusCode = statusCode };
         }

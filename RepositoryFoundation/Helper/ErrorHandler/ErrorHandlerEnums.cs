@@ -14,7 +14,7 @@ namespace RepositoryFoundation.Helper.ErrorHandler
         Unknown
     }
 
-    public enum ErrorStatusCode
+    public enum ResponseStatusCode
     {
         NoStatus = 0,
         OK = 200,

@@ -10,6 +10,7 @@ namespace RepositoryFoundation.Interfaces
     {
         IQueryable<TEntity> All { get; }
         IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
+        IQueryable<TEntity> AllIncluding(params string[] includePropertiesPath);
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam);
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> conditionParam);
         TEntity FirstOrDefault();

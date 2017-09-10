@@ -83,6 +83,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="content\app.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="content\app.config.uninstall.xdt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="content\web.config.uninstall.xdt">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="content\web.config.install.xdt">
       <SubType>Designer</SubType>
     </None>
@@ -93,7 +102,9 @@
     <None Include="Package.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="tools\init.ps1" />
     <None Include="tools\install.ps1" />
     <None Include="tools\uninstall.ps1" />
@@ -109,6 +120,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.XmlTransform, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap, Version=4.4.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\StructureMap.4.4.5\lib\net45\StructureMap.dll</HintPath>
