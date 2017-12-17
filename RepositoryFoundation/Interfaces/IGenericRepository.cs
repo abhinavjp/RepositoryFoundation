@@ -6,26 +6,26 @@ using System.Linq.Expressions;
 
 namespace RepositoryFoundation.Interfaces
 {
-    public interface IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext where TIdType: struct
+    public interface IGenericRepository<TContext, TEntity, in TIdType> where TEntity : class where TIdType: struct
     {
-        IQueryable<TEntity> All { get; }
-        IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties);
-        IQueryable<TEntity> AllIncluding(params string[] includePropertiesPath);
+        IQueryable<TEntity> All();
+        IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] includeProperties);
+        IQueryable<TEntity> All(params string[] includePropertiesPath);
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam);
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> conditionParam);
         TEntity FirstOrDefault();
         TEntity Find(int id);
         bool Any(Expression<Func<TEntity, bool>> conditionParam);
         bool Any();
-        void InsertOrUpdate(TEntity TEntry);
-        void InsertOrUpdateMultiple(params TEntity[] TEntries);
-        void InsertOrUpdateMultiple(IList<TEntity> TEntries);
-        void Insert(TEntity TEntry);
-        void InsertMultiple(params TEntity[] TEntries);
-        void InsertMultiple(IList<TEntity> TEntries);
-        void Update(TEntity TEntry);
-        void UpdateMultiple(params TEntity[] TEntries);
-        void UpdateMultiple(IList<TEntity> TEntries);
+        void InsertOrUpdate(TEntity entry);
+        void InsertOrUpdateMultiple(params TEntity[] entries);
+        void InsertOrUpdateMultiple(IList<TEntity> entries);
+        void Insert(TEntity entry);
+        void InsertMultiple(params TEntity[] entries);
+        void InsertMultiple(IList<TEntity> entries);
+        void Update(TEntity entry);
+        void UpdateMultiple(params TEntity[] entries);
+        void UpdateMultiple(IList<TEntity> entries);
         void Delete(TIdType id);
         void DeleteMultiple(params TIdType[] id);
         void SetCommandTimeout(int timeOut);

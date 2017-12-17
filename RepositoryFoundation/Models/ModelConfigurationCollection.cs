@@ -1,15 +1,7 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
-namespace RepositoryFoundation.Repository.Models
+namespace RepositoryFoundation.Models
 {
-    public class EntityFrameworkModelBuilderConfiguration : ConfigurationSection
-    {
-        [ConfigurationProperty("modelConfiguration", IsDefaultCollection = false)]
-        [ConfigurationCollection(typeof(string), AddItemName = "model")]
-        public ModelConfigurationCollection ModelConfigurations => (ModelConfigurationCollection)this["modelConfiguration"];
-    }
-
     public class ModelConfigurationCollection : ConfigurationElementCollection
     {
 
@@ -17,14 +9,11 @@ namespace RepositoryFoundation.Repository.Models
 
         protected override ConfigurationElement CreateNewElement() => new ModelConfigurationElement();
 
-        protected override Object GetElementKey(ConfigurationElement element) => ((ModelConfigurationElement)element).ModelName;
+        protected override object GetElementKey(ConfigurationElement element) => ((ModelConfigurationElement)element).Key;
 
         public ModelConfigurationElement this[int index]
         {
-            get
-            {
-                return (ModelConfigurationElement)BaseGet(index);
-            }
+            get => (ModelConfigurationElement)BaseGet(index);
             set
             {
                 if (BaseGet(index) != null)
@@ -35,7 +24,7 @@ namespace RepositoryFoundation.Repository.Models
             }
         }
 
-        new public ModelConfigurationElement this[string Name] => (ModelConfigurationElement)BaseGet(Name);
+        public new ModelConfigurationElement this[string name] => (ModelConfigurationElement)BaseGet(name);
 
         public int IndexOf(ModelConfigurationElement modelconfiguration) => BaseIndexOf(modelconfiguration);
 
@@ -54,7 +43,7 @@ namespace RepositoryFoundation.Repository.Models
         {
             if (BaseIndexOf(modelconfiguration) >= 0)
             {
-                BaseRemove(modelconfiguration.ModelName);
+                BaseRemove(modelconfiguration.Key);
             }
         }
 
@@ -72,15 +61,5 @@ namespace RepositoryFoundation.Repository.Models
         {
             BaseClear();
         }
-    }
-
-    public class ModelConfigurationElement : ConfigurationElement
-    {
-        [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
-        public string ModelName => (string)this["name"];
-        [ConfigurationProperty("provider", IsRequired = true)]
-        public string ProviderName => (string)this["provider"];
-        [ConfigurationProperty("connectionStringName", IsRequired = true)]
-        public string ConnectionStringName => (string)this["connectionStringName"];
     }
 }

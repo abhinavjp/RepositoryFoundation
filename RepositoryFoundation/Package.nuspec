@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Foundation</id>
-    <version>1.7.0</version>
+    <version>1.8.0</version>
     <title>Foundation</title>
     <authors>Abhinav</authors>
     <owners>Abhinav</owners>
@@ -17,6 +17,9 @@
       *This provides helper methods like ErrorHandler Classes and Dynamic Expression Helpers
     </description>
     <releaseNotes>
+      1.8.0
+      *Now UnitOfWork itself has an instance method which uses dependency injection to get its instance
+      *Now StructureMapConfigurator has a new name as UnitOfWorkConfigurator
       1.7.0
       *Now Multiple models can have single connection strings
       1.6.0

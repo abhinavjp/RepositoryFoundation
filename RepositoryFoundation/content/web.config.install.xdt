@@ -9,7 +9,7 @@
   </connectionStrings>
   <repositoryFoundation xdt:Transform="InsertIfMissing">
     <modelConfiguration xdt:Transform="InsertIfMissing">
-      <model name="##Your_Edmx_Model_Name##" provider="System.Data.SqlClient" connectionStringName="mainConnectionString" xdt:Transform="InsertIfMissing"></model>
+      <model key="##key##" name="##Your_Edmx_Model_Name##" connectionStringName="mainConnectionString" xdt:Transform="InsertIfMissing"></model>
     </modelConfiguration>
   </repositoryFoundation>
 </configuration>

@@ -5,11 +5,11 @@
     <section name="repositoryFoundation" type="RepositoryFoundation.Repository.Models.EntityFrameworkModelBuilderConfiguration, RepositoryFoundation" xdt:Transform="Insert" xdt:Locator="Match(name)"/>
   </configSections>
   <connectionStrings xdt:Transform="InsertIfMissing">
-    <add name="mainConnectionString" connectionString="data source=##Data_Source##;initial catalog=##Db_Name##;persist security info=True;user id=##User_Id##;password=##Password##;MultipleActiveResultSets=True;App=EntityFramework" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)"/>
+    <add name="mainConnectionString" connectionString="data source=##Data_Source##;initial catalog=##Db_Key##;persist security info=True;user id=##User_Id##;password=##Password##;MultipleActiveResultSets=True;App=EntityFramework" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)"/>
   </connectionStrings>
   <repositoryFoundation xdt:Transform="InsertIfMissing">
     <modelConfiguration xdt:Transform="InsertIfMissing">
-      <model name="##Your_Edmx_Model_Name##" provider="System.Data.SqlClient" connectionStringName="mainConnectionString" xdt:Transform="InsertIfMissing"></model>
+      <model key="##key##" name="##Your_Edmx_Model_Name##" connectionStringName="mainConnectionString" xdt:Transform="InsertIfMissing"></model>
     </modelConfiguration>
   </repositoryFoundation>
 </configuration>

@@ -1,40 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Data.Entity;
 using RepositoryFoundation.Interfaces;
-using System.Collections.Generic;
 
-namespace RepositoryFoundation.Repository.Models
+namespace RepositoryFoundation.Models
 {
     public class GenericRepository<TContext, TEntity, TIdType> : IGenericRepository<TContext, TEntity, TIdType> where TEntity : class where TContext : DbContext where TIdType : struct
     {
-        internal TContext context;
-        internal DbSet<TEntity> dbSet;
-        internal Func<TEntity, TIdType> idGetter;
+        internal TContext Context;
+        internal DbSet<TEntity> DbSet;
+        internal Func<TEntity, TIdType> IdGetter;
 
         public GenericRepository(TContext context, Func<TEntity, TIdType> idGetter)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
-            this.dbSet = context.Set<TEntity>();
-            this.idGetter = idGetter ?? throw new ArgumentNullException(nameof(idGetter), "The func delegate through which Id can be fetched was not supplied");
+            Context = context ?? throw new ArgumentNullException(nameof(context), "Context was not supplied");
+            DbSet = context.Set<TEntity>();
+            IdGetter = idGetter ?? throw new ArgumentNullException(nameof(idGetter), "The func delegate through which Id can be fetched was not supplied");
         }
 
-        public virtual IQueryable<TEntity> All => dbSet;
+        public virtual IQueryable<TEntity> All() => DbSet;
 
-        public virtual IQueryable<TEntity> AllIncluding(params Expression<Func<TEntity, object>>[] includeProperties)
+        public virtual IQueryable<TEntity> All(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            IQueryable<TEntity> query = dbSet;
-            foreach (var includeProperty in includeProperties)
-            {
-                query = query.Include(includeProperty);
-            }
-            return query;
+            return includeProperties.Aggregate<Expression<Func<TEntity, object>>, IQueryable<TEntity>>(DbSet, (current, includeProperty) => current.Include(includeProperty));
         }
 
-        public virtual IQueryable<TEntity> AllIncluding(params string[] includePropertiesPath)
+        public virtual IQueryable<TEntity> All(params string[] includePropertiesPath)
         {
-            IQueryable<TEntity> query = dbSet;
+            IQueryable<TEntity> query = DbSet;
             foreach (var includeProperty in includePropertiesPath)
             {
                 query = query.Include(includeProperty);
@@ -44,122 +39,123 @@ namespace RepositoryFoundation.Repository.Models
 
         public virtual IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> conditionParam)
         {
-            IQueryable<TEntity> query = dbSet;
+            IQueryable<TEntity> query = DbSet;
             query = query.Where(conditionParam);
             return query;
         }
 
         public virtual TEntity FirstOrDefault(Expression<Func<TEntity, bool>> conditionParam)
         {
-            return dbSet.FirstOrDefault(conditionParam);
+            return DbSet.FirstOrDefault(conditionParam);
         }
 
         public virtual TEntity FirstOrDefault()
         {
-            return dbSet.FirstOrDefault();
+            return DbSet.FirstOrDefault();
         }
 
         public virtual bool Any(Expression<Func<TEntity, bool>> conditionParam)
         {
-            return dbSet.Any(conditionParam);
+            return DbSet.Any(conditionParam);
         }
 
         public virtual bool Any()
         {
-            return dbSet.Any();
+            return DbSet.Any();
         }
 
         public virtual TEntity Find(int id)
         {
-            return dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
-        public virtual void InsertOrUpdate(TEntity TEntry)
+        public virtual void InsertOrUpdate(TEntity entry)
         {
-            if (idGetter(TEntry).Equals(default(TIdType)))
+            if (IdGetter != null && IdGetter(entry).Equals(default(TIdType)))
             {
-                dbSet.Add(TEntry);
+                DbSet.Add(entry);
             }
             else
             {
-                if (context.Entry(TEntry).State == EntityState.Detached)
+                if (Context.Entry(entry).State == EntityState.Detached)
                 {
-                    dbSet.Attach(TEntry);
+                    DbSet.Attach(entry);
                 }
-                context.Entry(TEntry).State = EntityState.Modified;
+                Context.Entry(entry).State = EntityState.Modified;
             }
         }
 
-        public void InsertOrUpdateMultiple(params TEntity[] TEntries)
+        public void InsertOrUpdateMultiple(params TEntity[] entries)
         {
-            foreach (var entry in TEntries)
+            foreach (var entry in entries)
             {
                 InsertOrUpdate(entry);
             }
         }
 
-        public void InsertOrUpdateMultiple(IList<TEntity> TEntries)
+        public void InsertOrUpdateMultiple(IList<TEntity> entries)
         {
-            InsertOrUpdateMultiple(TEntries.ToArray());
+            InsertOrUpdateMultiple(entries.ToArray());
         }
 
-        public virtual void Insert(TEntity TEntry)
+        public virtual void Insert(TEntity entry)
         {
-            dbSet.Add(TEntry);
+            DbSet.Add(entry);
         }
 
-        public virtual void InsertMultiple(params TEntity[] TEntries)
+        public virtual void InsertMultiple(params TEntity[] entries)
         {
-            dbSet.AddRange(TEntries.Where(t => idGetter(t).Equals(default(TIdType))));
+            DbSet.AddRange(entries.Where(t => IdGetter != null && IdGetter(t).Equals(default(TIdType))));
         }
 
-        public void InsertMultiple(IList<TEntity> TEntries)
+        public void InsertMultiple(IList<TEntity> entries)
         {
-            dbSet.AddRange(TEntries.Where(t => idGetter(t).Equals(default(TIdType))));
+            DbSet.AddRange(entries.Where(t => IdGetter != null && IdGetter(t).Equals(default(TIdType))));
         }
 
-        public virtual void Update(TEntity TEntry)
+        public virtual void Update(TEntity entry)
         {
-            if (context.Entry(TEntry).State == EntityState.Detached)
+            if (Context.Entry(entry).State == EntityState.Detached)
             {
-                dbSet.Attach(TEntry);
+                DbSet.Attach(entry);
             }
-            context.Entry(TEntry).State = EntityState.Modified;
+            Context.Entry(entry).State = EntityState.Modified;
         }
 
-        public virtual void UpdateMultiple(params TEntity[] TEntries)
+        public virtual void UpdateMultiple(params TEntity[] entries)
         {
-            foreach (var TEntry in TEntries)
+            foreach (var entry in entries)
             {
-                Update(TEntry);
+                Update(entry);
             }
         }
 
-        public void UpdateMultiple(IList<TEntity> TEntries)
+        public void UpdateMultiple(IList<TEntity> entries)
         {
-            UpdateMultiple(TEntries.ToArray());
+            UpdateMultiple(entries.ToArray());
         }
 
         public virtual void Delete(TIdType id)
         {
-            var item = dbSet.Find(id);
-            dbSet.Remove(item);
+            var item = DbSet.Find(id);
+            if (item != null)
+                DbSet.Remove(item);
         }
 
         public virtual void DeleteMultiple(params TIdType[] id)
         {
-            var item = dbSet.Where(tw => id.Contains(idGetter(tw)));
-            dbSet.RemoveRange(item);
+            var item = DbSet.Where(tw => IdGetter != null && id.Contains(IdGetter(tw)));
+            DbSet.RemoveRange(item);
         }
 
         public void SetCommandTimeout(int timeOut)
         {
-            context.Database.CommandTimeout = timeOut;
+            Context.Database.CommandTimeout = timeOut;
         }
 
         public void SetLogger(Action<string> logger)
         {
-            context.Database.Log = logger;
+            Context.Database.Log = logger;
         }
     }
 }
