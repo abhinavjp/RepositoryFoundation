@@ -18,7 +18,7 @@ namespace RepositoryFoundation.Helper.BulkRepository
         {
             _dataTable = dataTable;
             _connectionString = connectionString;
-            _tempTableName = $"#UpsertTable_{DateTime.UtcNow.ToFileTimeUtc()}";
+            _tempTableName = $"##UpsertTable_{DateTime.UtcNow.ToFileTimeUtc()}";
             _destinationTableName = destinationTableName;
             _primaryKeyColumnName = primaryKeyColumnName;
         }
@@ -57,7 +57,7 @@ namespace RepositoryFoundation.Helper.BulkRepository
         private void CreateTempTable(SqlConnection connection)
         {
             var queryBuilder = new StringBuilder();
-            queryBuilder.Append($"SELECT * INTO {_tempTableName} FROM @tempTable");
+            queryBuilder.Append($"SELECT TOP(0) * INTO {_tempTableName} FROM {_destinationTableName}");
 
 
             using (var tempTable = new DataTable())
@@ -66,10 +66,8 @@ namespace RepositoryFoundation.Helper.BulkRepository
                 {
                     tempTable.Columns.Add(JsonConvert.DeserializeObject<DataColumn>(JsonConvert.SerializeObject(dataColumn)));
                 }
-                var parameter = new SqlParameter("@tempTable", SqlDbType.Structured) { Value = tempTable };
                 using (IDbCommand cmd = new SqlCommand(queryBuilder.ToString(), connection))
                 {
-                    cmd.Parameters.Add(parameter);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -79,7 +77,7 @@ namespace RepositoryFoundation.Helper.BulkRepository
         private void InsertDataToTempTable(SqlConnection connection)
         {
             CreateTempTable(connection);
-            using (var bulk = new SqlBulkCopy(connection))
+            using (var bulk = new SqlBulkCopy(connection,SqlBulkCopyOptions.KeepIdentity, null))
             {
                 bulk.DestinationTableName = _tempTableName;
                 bulk.WriteToServer(_dataTable);
@@ -96,16 +94,22 @@ namespace RepositoryFoundation.Helper.BulkRepository
             query.AppendLine("WHEN MATCHED THEN ");
             query.AppendLine("UPDATE SET ");
 
-            foreach (DataColumn column in _dataTable.Columns)
-            {
-                if (column.ColumnName == _primaryKeyColumnName)
-                    continue;
-                query.AppendLine($"Target.{column.ColumnName}=Source.{column.ColumnName} ");
-            }
+            var columnNames = _dataTable.Columns.Cast<DataColumn>().Where(w => w.ColumnName != _primaryKeyColumnName)
+                .ToList();
+
+            query.AppendLine(string.Join(",", columnNames.Select(column => $"Target.{column.ColumnName}=Source.{column.ColumnName} ")));
+
+            //foreach (DataColumn column in _dataTable.Columns)
+            //{
+            //    if (column.ColumnName == _primaryKeyColumnName)
+            //        continue;
+            //    query.AppendLine($"Target.{column.ColumnName}=Source.{column.ColumnName} ");
+            //}
             query.AppendLine("WHEN NOT MATCHED THEN ");
             query.AppendLine(
                 $"INSERT ({string.Join(",", _dataTable.Columns.Cast<DataColumn>().Where(w=>w.ColumnName!=_primaryKeyColumnName).Select(s => s.ColumnName))}) VALUES ");
             query.AppendLine($"({string.Join(", ", _dataTable.Columns.Cast<DataColumn>().Where(w => w.ColumnName != _primaryKeyColumnName).Select(s => $"Source.{s.ColumnName}"))})");
+            query.AppendLine(";");
 
             return query.ToString();
         }

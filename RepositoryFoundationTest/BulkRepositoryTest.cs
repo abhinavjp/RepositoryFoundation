@@ -15,9 +15,9 @@ namespace RepositoryFoundationTest
         {
             var connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["FpsConnection"].ConnectionString;
             var apartmentList = new List<Apartment>();
-            for (int index = 0; index < 10000; index++)
+            for (int index = 0; index < 1000000; index++)
             {
-                apartmentList.Add(new Apartment{IsDeleted = false, Number = index + 1, OnRent = ((index % 2)>0) });
+                apartmentList.Add(new Apartment{IsDeleted = false, Number = index + 1, OnRent = ((index % 2)>0)});
             }
 
             var repo = new Repository(apartmentList.AsDataTable(), "Apartment", connectionString, "Id");

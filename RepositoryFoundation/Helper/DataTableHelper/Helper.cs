@@ -21,7 +21,12 @@ namespace RepositoryFoundation.Helper.DataTableHelper
                 //Defining type of data column gives proper data table 
                 var type = (prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType);
                 //Setting column names as Property names
-                dataTable.Columns.Add(prop.Name, type);
+                var dataColumn = new DataColumn(prop.Name, type)
+                {
+                    AllowDBNull = prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>),
+                    AutoIncrement = false
+                };
+                dataTable.Columns.Add(dataColumn);
             }
             foreach (var item in items)
             {
